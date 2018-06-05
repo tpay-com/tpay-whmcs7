@@ -60,10 +60,10 @@ $resources = $tpayNotificationHandler->checkPayment();
 
 // Retrieve data returned in payment gateway callback
 // Varies per payment gateway
-$success = $resources["tr_status"] === 'TRUE' ? true : false;
+$success = $resources["tr_status"] === 'TRUE';
 $invoiceId = $resources["tr_crc"];
 $transactionId = $resources["tr_id"];
-$transactionStatus = $success ? 'Success' : 'Failure';
+$transactionStatus = $success === true ? 'Success' : 'Failure';
 
 /**
  * Validate Callback Invoice ID.
@@ -111,14 +111,15 @@ if ($success) {
      * @param int $invoiceId Invoice ID
      * @param string $transactionId Transaction ID
      * @param float $paymentAmount Amount paid (defaults to full balance)
+     * @param float $paymentFee Payment fee (optional)
      * @param string $gatewayModule Gateway module name
      */
     addInvoicePayment(
         $invoiceId,
         $transactionId,
         $resources["tr_paid"],
+        0,
         $gatewayModuleName
-
     );
 
 }
